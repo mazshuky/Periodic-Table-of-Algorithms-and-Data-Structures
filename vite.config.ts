@@ -1,2 +1,2 @@
 import { defineConfig } from 'vite';
-export default defineConfig({ base: '/periodic-table-of-algorithms/' });
+export default defineConfig({ base: '/Periodic-Table-of-Algorithms-and-Data-Structures/' });
