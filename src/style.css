@@ -1,52 +1,92 @@
 :root {
-  --bg: #0b0e14;
-  --panel: #11151f;
-  --grid-line: #1c2230;
-  --text: #e8ecf4;
-  --muted: #8b93a7;
+    --bg: #0b0e14;
+    --panel: #11151f;
+    --grid-line: #1c2230;
+    --text: #e8ecf4;
+    --muted: #8b93a7;
 
-  --sort: #3b82f6;   --sort-dim: #152238;
-  --search: #22c55e; --search-dim: #10241a;
-  --graph: #a855f7;  --graph-dim: #221432;
-  --tree: #f97316;   --tree-dim: #2a1a0c;
-  --dp: #ec4899;     --dp-dim: #2a1322;
-  --greedy: #eab308; --greedy-dim: #2a2310;
-  --lds: #94a3b8;    --lds-dim: #1c212b;
-  --hash: #14b8a6;   --hash-dim: #0f2522;
-  --heap: #06b6d4;   --heap-dim: #0c2228;
-  --dac: #84cc16;    --dac-dim: #1d2410;
-  --back: #a16207;   --back-dim: #241c0c;
-  --string: #8b5cf6; --string-dim: #1d1830;
+    --sort: #3b82f6;   --sort-dim: #152238;
+    --search: #22c55e; --search-dim: #10241a;
+    --graph: #a855f7;  --graph-dim: #221432;
+    --tree: #f97316;   --tree-dim: #2a1a0c;
+    --dp: #ec4899;     --dp-dim: #2a1322;
+    --greedy: #eab308; --greedy-dim: #2a2310;
+    --lds: #94a3b8;    --lds-dim: #1c212b;
+    --hash: #14b8a6;   --hash-dim: #0f2522;
+    --heap: #06b6d4;   --heap-dim: #0c2228;
+    --dac: #84cc16;    --dac-dim: #1d2410;
+    --back: #a16207;   --back-dim: #241c0c;
+    --string: #8b5cf6; --string-dim: #1d1830;
+}
+
+:root[data-theme='light'] {
+    --bg: #f7f8fb;
+    --panel: #ffffff;
+    --grid-line: #e2e5ec;
+    --text: #1a1d27;
+    --muted: #6b7280;
+
+    --sort-dim: #dbeafe;
+    --search-dim: #dcfce7;
+    --graph-dim: #f3e8ff;
+    --tree-dim: #ffedd5;
+    --dp-dim: #fce7f3;
+    --greedy-dim: #fef9c3;
+    --lds-dim: #e5e7eb;
+    --hash-dim: #ccfbf1;
+    --heap-dim: #cffafe;
+    --dac-dim: #ecfccb;
+    --back-dim: #fef3c7;
+    --string-dim: #ede9fe;
 }
 
 * { box-sizing: border-box; }
 
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    transition: background 0.15s ease, color 0.15s ease;
 }
 
 header {
-  padding: 28px 32px 18px;
-  border-bottom: 1px solid var(--grid-line);
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  flex-wrap: wrap;
+    padding: 28px 32px 18px;
+    border-bottom: 1px solid var(--grid-line);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
+header .title-group { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; }
 header h1 { margin: 0; font-size: 28px; letter-spacing: 0.5px; font-weight: 700; }
 header h1 span { color: var(--graph); }
 header p { margin: 0; color: var(--muted); font-size: 13px; }
 
+.theme-toggle {
+    background: var(--panel);
+    border: 1px solid var(--grid-line);
+    color: var(--text);
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+    cursor: pointer;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.theme-toggle:hover { border-color: var(--muted); }
+
 .key {
-  padding: 20px 32px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 22px;
-  border-bottom: 1px solid var(--grid-line);
-  font-size: 12px;
+    padding: 20px 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    border-bottom: 1px solid var(--grid-line);
+    font-size: 12px;
 }
 .key-item { display: flex; align-items: center; gap: 8px; color: var(--muted); }
 .swatch { width: 12px; height: 12px; border-radius: 2px; flex: none; }
@@ -54,37 +94,37 @@ header p { margin: 0; color: var(--muted); font-size: 13px; }
 .table-wrap { padding: 28px 32px 60px; overflow-x: auto; }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(18, 96px);
-  grid-auto-rows: 84px;
-  gap: 5px;
-  width: max-content;
+    display: grid;
+    grid-template-columns: repeat(18, 96px);
+    grid-auto-rows: 84px;
+    gap: 5px;
+    width: max-content;
 }
 
 .tile {
-  width: 96px;
-  height: 84px;
-  border-radius: 6px;
-  padding: 7px;
-  cursor: pointer;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+    width: 96px;
+    height: 84px;
+    border-radius: 6px;
+    padding: 7px;
+    cursor: pointer;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 .tile:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
-  z-index: 2;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+    z-index: 2;
 }
 .tile .complexity {
-  position: absolute;
-  top: 6px;
-  left: 8px;
-  font-size: 9px;
-  color: rgba(255, 255, 255, 0.55);
+    position: absolute;
+    top: 6px;
+    left: 8px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.55);
 }
 .tile .sym { font-size: 22px; font-weight: 700; line-height: 1; }
 .tile .name { font-size: 10px; color: rgba(255, 255, 255, 0.75); margin-top: 2px; line-height: 1.2; }
@@ -115,52 +155,52 @@ header p { margin: 0; color: var(--muted); font-size: 13px; }
 .string .sym { color: var(--string); }
 
 .overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
 }
 .overlay.open { display: flex; }
 .modal {
-  width: min(440px, 90vw);
-  background: var(--panel);
-  border: 1px solid var(--grid-line);
-  border-radius: 10px;
-  padding: 26px;
-  position: relative;
+    width: min(440px, 90vw);
+    background: var(--panel);
+    border: 1px solid var(--grid-line);
+    border-radius: 10px;
+    padding: 26px;
+    position: relative;
 }
 .modal .close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  cursor: pointer;
-  color: var(--muted);
-  font-size: 18px;
-  background: none;
-  border: none;
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 18px;
+    background: none;
+    border: none;
 }
 .modal-sym { font-size: 40px; font-weight: 700; }
 .modal-name { font-size: 16px; color: var(--muted); margin-top: 2px; }
 .modal-cat {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 11px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  border: 1px solid currentColor;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid currentColor;
 }
 .modal-row { margin-top: 16px; font-size: 13px; }
 .modal-row b {
-  color: var(--muted);
-  font-weight: 500;
-  display: block;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  margin-bottom: 3px;
+    color: var(--muted);
+    font-weight: 500;
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 3px;
 }
 
 footer { padding: 20px 32px 40px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--grid-line); }
