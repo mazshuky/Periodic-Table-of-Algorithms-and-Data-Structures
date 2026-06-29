@@ -165,7 +165,7 @@ header p { margin: 0; color: var(--muted); font-size: 13px; }
 }
 .overlay.open { display: flex; }
 .modal {
-    width: min(440px, 90vw);
+    width: min(520px, 92vw);
     background: var(--panel);
     border: 1px solid var(--grid-line);
     border-radius: 10px;
@@ -205,3 +205,55 @@ header p { margin: 0; color: var(--muted); font-size: 13px; }
 
 footer { padding: 20px 32px 40px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--grid-line); }
 footer a { color: var(--muted); }
+
+.viz-section { display: none; margin-top: 18px; }
+.viz-section.show { display: block; }
+
+.viz-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 140px;
+    background: var(--bg);
+    border: 1px solid var(--grid-line);
+    border-radius: 8px;
+    padding: 10px 8px;
+}
+.viz-bar {
+    flex: 1;
+    background: var(--lds-dim);
+    border: 1px solid var(--lds);
+    border-radius: 3px 3px 0 0;
+    min-height: 4px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    transition: height 0.12s linear, background 0.12s linear;
+}
+.viz-bar span {
+    position: absolute;
+    top: -16px;
+    font-size: 9px;
+    color: var(--muted);
+}
+.viz-bar.viz-active { background: var(--greedy-dim); border-color: var(--greedy); }
+.viz-bar.viz-sorted { background: var(--search-dim); border-color: var(--search); }
+
+.viz-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.viz-btn {
+    background: var(--bg);
+    border: 1px solid var(--grid-line);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+}
+.viz-btn:hover { border-color: var(--muted); }
+.viz-progress { font-size: 11px; color: var(--muted); margin-left: auto; }

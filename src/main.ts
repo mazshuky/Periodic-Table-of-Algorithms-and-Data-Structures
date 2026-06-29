@@ -2,13 +2,20 @@ import './style.css';
 import { CATEGORIES, ITEMS } from './data';
 import { sortByComplexity, buildSlots } from './layout';
 import type { AlgoItem } from './types';
+import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
     CATEGORIES.forEach((c) => {
         const div = document.createElement('div');
         div.className = 'key-item';
-        div.innerHTML = `<span class="swatch" style="background:var(--${c.id})"></span>${c.label}`;
+
+        const swatch = document.createElement('span');
+        swatch.className = 'swatch';
+        swatch.style.setProperty('background', `var(--${c.id})`);
+
+        div.appendChild(swatch);
+        div.appendChild(document.createTextNode(c.label));
         keyEl.appendChild(div);
     });
 }
@@ -39,6 +46,33 @@ function setupModal(): (item: AlgoItem) => void {
     const overlay = document.getElementById('overlay')!;
     const catMap = Object.fromEntries(CATEGORIES.map((c) => [c.id, c]));
 
+    const vizSection = document.getElementById('vizSection')!;
+    const vizBars = document.getElementById('vizBars')!;
+    const vizProgress = document.getElementById('vizProgress')!;
+    const vizReplayBtn = document.getElementById('vizReplay') as HTMLButtonElement;
+    const vizPlayPauseBtn = document.getElementById('vizPlayPause') as HTMLButtonElement;
+
+    const player = new SortPlayer(vizBars, (idx, total) => {
+        vizProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isPlaying = true;
+
+    vizReplayBtn.addEventListener('click', () => {
+        player.restart();
+        isPlaying = true;
+        vizPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizPlayPauseBtn.addEventListener('click', () => {
+        if (isPlaying) {
+            player.pause();
+            vizPlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            player.play();
+            vizPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isPlaying = !isPlaying;
+    });
+
     function open(item: AlgoItem): void {
         const cat = catMap[item.cat];
         (document.getElementById('mSym') as HTMLElement).textContent = item.sym;
@@ -50,11 +84,26 @@ function setupModal(): (item: AlgoItem) => void {
         (document.getElementById('mTime') as HTMLElement).textContent = item.time;
         (document.getElementById('mSpace') as HTMLElement).textContent = item.space;
         (document.getElementById('mDesc') as HTMLElement).textContent = item.desc;
+
+        const generator = SORT_GENERATORS[item.sym];
+        if (generator) {
+            vizSection.classList.add('show');
+            const steps = generator(randomArray());
+            player.load(steps);
+            player.play();
+            isPlaying = true;
+            vizPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        } else {
+            vizSection.classList.remove('show');
+            player.pause();
+        }
+
         overlay.classList.add('open');
     }
 
     function close(): void {
         overlay.classList.remove('open');
+        player.pause();
     }
 
     document.getElementById('closeBtn')!.addEventListener('click', close);
