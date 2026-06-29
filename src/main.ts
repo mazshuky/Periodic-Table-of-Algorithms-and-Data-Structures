@@ -3,6 +3,7 @@ import { CATEGORIES, ITEMS } from './data';
 import { sortByComplexity, buildSlots } from './layout';
 import type { AlgoItem } from './types';
 import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer';
+import { GRAPH_GENERATORS, GraphPlayer } from './graphVisualizer';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
@@ -73,6 +74,33 @@ function setupModal(): (item: AlgoItem) => void {
         isPlaying = !isPlaying;
     });
 
+    const vizGraphSection = document.getElementById('vizGraphSection')!;
+    const vizGraphSvg = document.getElementById('vizGraph') as unknown as SVGSVGElement;
+    const vizGraphProgress = document.getElementById('vizGraphProgress')!;
+    const vizGraphReplayBtn = document.getElementById('vizGraphReplay') as HTMLButtonElement;
+    const vizGraphPlayPauseBtn = document.getElementById('vizGraphPlayPause') as HTMLButtonElement;
+
+    const graphPlayer = new GraphPlayer(vizGraphSvg, (idx, total) => {
+        vizGraphProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isGraphPlaying = true;
+
+    vizGraphReplayBtn.addEventListener('click', () => {
+        graphPlayer.restart();
+        isGraphPlaying = true;
+        vizGraphPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizGraphPlayPauseBtn.addEventListener('click', () => {
+        if (isGraphPlaying) {
+            graphPlayer.pause();
+            vizGraphPlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            graphPlayer.play();
+            vizGraphPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isGraphPlaying = !isGraphPlaying;
+    });
+
     function open(item: AlgoItem): void {
         const cat = catMap[item.cat];
         (document.getElementById('mSym') as HTMLElement).textContent = item.sym;
@@ -85,17 +113,32 @@ function setupModal(): (item: AlgoItem) => void {
         (document.getElementById('mSpace') as HTMLElement).textContent = item.space;
         (document.getElementById('mDesc') as HTMLElement).textContent = item.desc;
 
-        const generator = SORT_GENERATORS[item.sym];
-        if (generator) {
+        const sortGenerator = SORT_GENERATORS[item.sym];
+        const graphGenerator = GRAPH_GENERATORS[item.sym];
+
+        if (sortGenerator) {
             vizSection.classList.add('show');
-            const steps = generator(randomArray());
+            vizGraphSection.classList.remove('show');
+            graphPlayer.pause();
+            const steps = sortGenerator(randomArray());
             player.load(steps);
             player.play();
             isPlaying = true;
             vizPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
-        } else {
+        } else if (graphGenerator) {
+            vizGraphSection.classList.add('show');
             vizSection.classList.remove('show');
             player.pause();
+            const steps = graphGenerator();
+            graphPlayer.load(steps);
+            graphPlayer.play();
+            isGraphPlaying = true;
+            vizGraphPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        } else {
+            vizSection.classList.remove('show');
+            vizGraphSection.classList.remove('show');
+            player.pause();
+            graphPlayer.pause();
         }
 
         overlay.classList.add('open');
@@ -104,6 +147,7 @@ function setupModal(): (item: AlgoItem) => void {
     function close(): void {
         overlay.classList.remove('open');
         player.pause();
+        graphPlayer.pause();
     }
 
     document.getElementById('closeBtn')!.addEventListener('click', close);
