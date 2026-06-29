@@ -1,0 +1,2 @@
+import { defineConfig } from 'vite';
+export default defineConfig({ base: '/periodic-table-of-algorithms/' });
