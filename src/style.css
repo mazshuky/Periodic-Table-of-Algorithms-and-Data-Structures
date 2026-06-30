@@ -265,3 +265,23 @@ footer a { color: var(--muted); }
     border: 1px solid var(--grid-line);
     border-radius: 8px;
 }
+
+.fw-table {
+    border-collapse: collapse;
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--grid-line);
+    border-radius: 8px;
+    font-size: 12px;
+}
+.fw-table th, .fw-table td {
+    border: 1px solid var(--grid-line);
+    padding: 6px 4px;
+    text-align: center;
+    width: 16.6%;
+}
+.fw-table th { color: var(--muted); font-weight: 600; }
+.fw-table th.fw-k { color: var(--greedy); }
+.fw-table td.fw-active { background: var(--greedy-dim); color: var(--text); }
+.fw-table td.fw-updated { background: var(--search-dim); color: var(--text); font-weight: 700; }
+.fw-caption { margin-top: 8px; font-size: 11px; color: var(--muted); min-height: 28px; }

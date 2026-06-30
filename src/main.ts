@@ -4,6 +4,7 @@ import { sortByComplexity, buildSlots } from './layout';
 import type { AlgoItem } from './types';
 import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer';
 import { GRAPH_GENERATORS, GraphPlayer } from './graphVisualizer';
+import { floydWarshallSteps, MatrixPlayer, tarjanSteps, TarjanPlayer } from './matrixVisualizer';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
@@ -101,6 +102,60 @@ function setupModal(): (item: AlgoItem) => void {
         isGraphPlaying = !isGraphPlaying;
     });
 
+    const vizMatrixSection = document.getElementById('vizMatrixSection')!;
+    const vizMatrixEl = document.getElementById('vizMatrix')!;
+    const vizMatrixProgress = document.getElementById('vizMatrixProgress')!;
+    const vizMatrixReplayBtn = document.getElementById('vizMatrixReplay') as HTMLButtonElement;
+    const vizMatrixPlayPauseBtn = document.getElementById('vizMatrixPlayPause') as HTMLButtonElement;
+
+    const matrixPlayer = new MatrixPlayer(vizMatrixEl, (idx, total) => {
+        vizMatrixProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isMatrixPlaying = true;
+
+    vizMatrixReplayBtn.addEventListener('click', () => {
+        matrixPlayer.restart();
+        isMatrixPlaying = true;
+        vizMatrixPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizMatrixPlayPauseBtn.addEventListener('click', () => {
+        if (isMatrixPlaying) {
+            matrixPlayer.pause();
+            vizMatrixPlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            matrixPlayer.play();
+            vizMatrixPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isMatrixPlaying = !isMatrixPlaying;
+    });
+
+    const vizTarjanSection = document.getElementById('vizTarjanSection')!;
+    const vizTarjanSvg = document.getElementById('vizTarjan') as unknown as SVGSVGElement;
+    const vizTarjanProgress = document.getElementById('vizTarjanProgress')!;
+    const vizTarjanReplayBtn = document.getElementById('vizTarjanReplay') as HTMLButtonElement;
+    const vizTarjanPlayPauseBtn = document.getElementById('vizTarjanPlayPause') as HTMLButtonElement;
+
+    const tarjanPlayer = new TarjanPlayer(vizTarjanSvg, (idx, total) => {
+        vizTarjanProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isTarjanPlaying = true;
+
+    vizTarjanReplayBtn.addEventListener('click', () => {
+        tarjanPlayer.restart();
+        isTarjanPlaying = true;
+        vizTarjanPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizTarjanPlayPauseBtn.addEventListener('click', () => {
+        if (isTarjanPlaying) {
+            tarjanPlayer.pause();
+            vizTarjanPlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            tarjanPlayer.play();
+            vizTarjanPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isTarjanPlaying = !isTarjanPlaying;
+    });
+
     function open(item: AlgoItem): void {
         const cat = catMap[item.cat];
         (document.getElementById('mSym') as HTMLElement).textContent = item.sym;
@@ -115,11 +170,24 @@ function setupModal(): (item: AlgoItem) => void {
 
         const sortGenerator = SORT_GENERATORS[item.sym];
         const graphGenerator = GRAPH_GENERATORS[item.sym];
+        const isFloydWarshall = item.sym === 'Fwl';
+        const isTarjan = item.sym === 'Tar';
+
+        function hideAllViz(): void {
+            vizSection.classList.remove('show');
+            vizGraphSection.classList.remove('show');
+            vizMatrixSection.classList.remove('show');
+            vizTarjanSection.classList.remove('show');
+            player.pause();
+            graphPlayer.pause();
+            matrixPlayer.pause();
+            tarjanPlayer.pause();
+        }
+
+        hideAllViz();
 
         if (sortGenerator) {
             vizSection.classList.add('show');
-            vizGraphSection.classList.remove('show');
-            graphPlayer.pause();
             const steps = sortGenerator(randomArray());
             player.load(steps);
             player.play();
@@ -127,18 +195,23 @@ function setupModal(): (item: AlgoItem) => void {
             vizPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
         } else if (graphGenerator) {
             vizGraphSection.classList.add('show');
-            vizSection.classList.remove('show');
-            player.pause();
             const steps = graphGenerator();
             graphPlayer.load(steps);
             graphPlayer.play();
             isGraphPlaying = true;
             vizGraphPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
-        } else {
-            vizSection.classList.remove('show');
-            vizGraphSection.classList.remove('show');
-            player.pause();
-            graphPlayer.pause();
+        } else if (isFloydWarshall) {
+            vizMatrixSection.classList.add('show');
+            matrixPlayer.load(floydWarshallSteps());
+            matrixPlayer.play();
+            isMatrixPlaying = true;
+            vizMatrixPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        } else if (isTarjan) {
+            vizTarjanSection.classList.add('show');
+            tarjanPlayer.load(tarjanSteps());
+            tarjanPlayer.play();
+            isTarjanPlaying = true;
+            vizTarjanPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
         }
 
         overlay.classList.add('open');
@@ -148,6 +221,8 @@ function setupModal(): (item: AlgoItem) => void {
         overlay.classList.remove('open');
         player.pause();
         graphPlayer.pause();
+        matrixPlayer.pause();
+        tarjanPlayer.pause();
     }
 
     document.getElementById('closeBtn')!.addEventListener('click', close);
