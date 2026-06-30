@@ -2,9 +2,10 @@ import './style.css';
 import { CATEGORIES, ITEMS } from './data';
 import { sortByComplexity, buildSlots } from './layout';
 import type { AlgoItem } from './types';
-import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer';
+import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer.ts';
 import { GRAPH_GENERATORS, GraphPlayer } from './graphVisualizer';
 import { floydWarshallSteps, MatrixPlayer, tarjanSteps, TarjanPlayer } from './matrixVisualizer';
+import { TREE_GENERATORS, TreePlayer, fenwickSteps, FenwickPlayer } from './treeVisualizer';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
@@ -156,6 +157,62 @@ function setupModal(): (item: AlgoItem) => void {
         isTarjanPlaying = !isTarjanPlaying;
     });
 
+    const vizTreeSection = document.getElementById('vizTreeSection')!;
+    const vizTreeSvg = document.getElementById('vizTree') as unknown as SVGSVGElement;
+    const vizTreeCaption = document.getElementById('vizTreeCaption')!;
+    const vizTreeProgress = document.getElementById('vizTreeProgress')!;
+    const vizTreeReplayBtn = document.getElementById('vizTreeReplay') as HTMLButtonElement;
+    const vizTreePlayPauseBtn = document.getElementById('vizTreePlayPause') as HTMLButtonElement;
+
+    const treePlayer = new TreePlayer(vizTreeSvg, vizTreeCaption, (idx, total) => {
+        vizTreeProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isTreePlaying = true;
+
+    vizTreeReplayBtn.addEventListener('click', () => {
+        treePlayer.restart();
+        isTreePlaying = true;
+        vizTreePlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizTreePlayPauseBtn.addEventListener('click', () => {
+        if (isTreePlaying) {
+            treePlayer.pause();
+            vizTreePlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            treePlayer.play();
+            vizTreePlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isTreePlaying = !isTreePlaying;
+    });
+
+    const vizFenwickSection = document.getElementById('vizFenwickSection')!;
+    const vizFenwickBars = document.getElementById('vizFenwickBars')!;
+    const vizFenwickCaption = document.getElementById('vizFenwickCaption')!;
+    const vizFenwickProgress = document.getElementById('vizFenwickProgress')!;
+    const vizFenwickReplayBtn = document.getElementById('vizFenwickReplay') as HTMLButtonElement;
+    const vizFenwickPlayPauseBtn = document.getElementById('vizFenwickPlayPause') as HTMLButtonElement;
+
+    const fenwickPlayer = new FenwickPlayer(vizFenwickBars, vizFenwickCaption, (idx, total) => {
+        vizFenwickProgress.textContent = `step ${idx}/${total}`;
+    });
+    let isFenwickPlaying = true;
+
+    vizFenwickReplayBtn.addEventListener('click', () => {
+        fenwickPlayer.restart();
+        isFenwickPlaying = true;
+        vizFenwickPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+    });
+    vizFenwickPlayPauseBtn.addEventListener('click', () => {
+        if (isFenwickPlaying) {
+            fenwickPlayer.pause();
+            vizFenwickPlayPauseBtn.innerHTML = '&#9654; Play';
+        } else {
+            fenwickPlayer.play();
+            vizFenwickPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        }
+        isFenwickPlaying = !isFenwickPlaying;
+    });
+
     function open(item: AlgoItem): void {
         const cat = catMap[item.cat];
         (document.getElementById('mSym') as HTMLElement).textContent = item.sym;
@@ -170,18 +227,24 @@ function setupModal(): (item: AlgoItem) => void {
 
         const sortGenerator = SORT_GENERATORS[item.sym];
         const graphGenerator = GRAPH_GENERATORS[item.sym];
+        const treeGenerator = TREE_GENERATORS[item.sym];
         const isFloydWarshall = item.sym === 'Fwl';
         const isTarjan = item.sym === 'Tar';
+        const isFenwick = item.sym === 'Fwt';
 
         function hideAllViz(): void {
             vizSection.classList.remove('show');
             vizGraphSection.classList.remove('show');
             vizMatrixSection.classList.remove('show');
             vizTarjanSection.classList.remove('show');
+            vizTreeSection.classList.remove('show');
+            vizFenwickSection.classList.remove('show');
             player.pause();
             graphPlayer.pause();
             matrixPlayer.pause();
             tarjanPlayer.pause();
+            treePlayer.pause();
+            fenwickPlayer.pause();
         }
 
         hideAllViz();
@@ -212,6 +275,18 @@ function setupModal(): (item: AlgoItem) => void {
             tarjanPlayer.play();
             isTarjanPlaying = true;
             vizTarjanPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        } else if (treeGenerator) {
+            vizTreeSection.classList.add('show');
+            treePlayer.load(treeGenerator());
+            treePlayer.play();
+            isTreePlaying = true;
+            vizTreePlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
+        } else if (isFenwick) {
+            vizFenwickSection.classList.add('show');
+            fenwickPlayer.load(fenwickSteps());
+            fenwickPlayer.play();
+            isFenwickPlaying = true;
+            vizFenwickPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause';
         }
 
         overlay.classList.add('open');
@@ -223,6 +298,8 @@ function setupModal(): (item: AlgoItem) => void {
         graphPlayer.pause();
         matrixPlayer.pause();
         tarjanPlayer.pause();
+        treePlayer.pause();
+        fenwickPlayer.pause();
     }
 
     document.getElementById('closeBtn')!.addEventListener('click', close);
