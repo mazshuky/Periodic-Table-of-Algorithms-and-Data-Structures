@@ -9,8 +9,6 @@ Click any tile to open a detail modal with time/space complexity, a one-line
 description, and an **animated step-by-step visualizer** specific to that
 algorithm or structure.
 
-![Screenshot 2026-07-01 141036.jpg](assets/Screenshot%202026-07-01%20141036.jpg)
-
 🔗 **Live demo:** [HERE](https://mazshuky.github.io/Periodic-Table-of-Algorithms-and-Data-Structures/)
 
 ---
