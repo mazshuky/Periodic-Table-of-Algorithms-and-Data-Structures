@@ -407,7 +407,9 @@ function setupModal(): (item: AlgoItem) => void {
         const catEl = document.getElementById('mCat') as HTMLElement;
         catEl.textContent = cat.label;
         catEl.style.color = `var(--${item.cat})`;
-        (document.getElementById('mTime') as HTMLElement).textContent = item.time;
+        (document.getElementById('mBest') as HTMLElement).textContent = item.best ?? item.time;
+        (document.getElementById('mAvg') as HTMLElement).textContent = item.average ?? item.time;
+        (document.getElementById('mWorst') as HTMLElement).textContent = item.worst ?? item.time;
         (document.getElementById('mSpace') as HTMLElement).textContent = item.space;
         (document.getElementById('mDesc') as HTMLElement).textContent = item.desc;
 

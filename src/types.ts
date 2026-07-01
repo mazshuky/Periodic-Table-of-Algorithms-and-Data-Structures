@@ -13,6 +13,9 @@ export interface AlgoItem {
   cat: CategoryId;
   time: string;
   space: string;
+  best?: string;
+  average?: string;
+  worst?: string;
   desc: string;
 }
 
