@@ -1,4 +1,4 @@
-import type { GNode, GEdge, GraphStep } from './graphVisualizer';
+import type { GNode, GEdge, GraphStep } from './graphVisualizer.ts';
 
 // ---------- Floyd-Warshall: animated distance matrix ----------
 

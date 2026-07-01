@@ -2,16 +2,16 @@ import './style.css';
 import { CATEGORIES, ITEMS } from './data';
 import { sortByComplexity, buildSlots } from './layout';
 import type { AlgoItem } from './types';
-import { SORT_GENERATORS, SortPlayer, randomArray } from './sortVisualizer';
-import { GRAPH_GENERATORS, GraphPlayer } from './graphVisualizer';
-import { floydWarshallSteps, MatrixPlayer, tarjanSteps, TarjanPlayer } from './matrixVisualizer';
-import { TREE_GENERATORS, TreePlayer, fenwickSteps, FenwickPlayer } from './treeVisualizer';
-import { DP_GENERATORS, DPPlayer } from './dpVisualizer';
-import { SEARCH_GENERATORS, SearchPlayer } from './searchVisualizer';
-import { huffmanSteps, HuffmanPlayer, activitySelectionSteps, ActivityPlayer, jobSchedulingSteps, JobSchedulingPlayer } from './greedyVisualizer';
-import { LINEAR_GENERATORS, LinearPlayer } from './linearVisualizer';
-import { hashTableSteps, HashTablePlayer, bloomFilterSteps, BloomFilterPlayer, lruCacheSteps, LRUCachePlayer, binaryHeapSteps, BinaryHeapPlayer, fibHeapSteps, FibHeapPlayer } from './hashHeapVisualizer';
-import { karatsubaSteps, KaratsubaPlayer, closestPairSteps, ClosestPairPlayer, nQueensSteps, NQueensPlayer, sudokuSteps, SudokuPlayer, kmpSteps, KMPPlayer, rabinKarpSteps, RabinKarpPlayer, suffixArraySteps, SuffixArrayPlayer } from './divBackStringVisualizer';
+import { SORT_GENERATORS, SortPlayer, randomArray } from './visualizer/sortVisualizer.ts';
+import { GRAPH_GENERATORS, GraphPlayer } from './visualizer/graphVisualizer.ts';
+import { floydWarshallSteps, MatrixPlayer, tarjanSteps, TarjanPlayer } from './visualizer/matrixVisualizer.ts';
+import { TREE_GENERATORS, TreePlayer, fenwickSteps, FenwickPlayer } from './visualizer/treeVisualizer.ts';
+import { DP_GENERATORS, DPPlayer } from './visualizer/dpVisualizer.ts';
+import { SEARCH_GENERATORS, SearchPlayer } from './visualizer/searchVisualizer.ts';
+import { huffmanSteps, HuffmanPlayer, activitySelectionSteps, ActivityPlayer, jobSchedulingSteps, JobSchedulingPlayer } from './visualizer/greedyVisualizer.ts';
+import { LINEAR_GENERATORS, LinearPlayer } from './visualizer/linearVisualizer.ts';
+import { hashTableSteps, HashTablePlayer, bloomFilterSteps, BloomFilterPlayer, lruCacheSteps, LRUCachePlayer, binaryHeapSteps, BinaryHeapPlayer, fibHeapSteps, FibHeapPlayer } from './visualizer/hashHeapVisualizer.ts';
+import { karatsubaSteps, KaratsubaPlayer, closestPairSteps, ClosestPairPlayer, nQueensSteps, NQueensPlayer, sudokuSteps, SudokuPlayer, kmpSteps, KMPPlayer, rabinKarpSteps, RabinKarpPlayer, suffixArraySteps, SuffixArrayPlayer } from './visualizer/divBackStringVisualizer.ts';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
