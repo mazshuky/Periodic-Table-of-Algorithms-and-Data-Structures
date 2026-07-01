@@ -20,7 +20,7 @@
 }
 
 :root[data-theme='light'] {
-    --bg: #f7f8fb;
+    --bg: #fdfdfd;
     --panel: #ffffff;
     --grid-line: #e2e5ec;
     --text: #1a1d27;
@@ -124,10 +124,16 @@ header p { margin: 0; color: var(--muted); font-size: 13px; }
     top: 6px;
     left: 8px;
     font-size: 9px;
+    color: rgba(0, 0, 0, 0.35);
+}
+:root:not([data-theme='light']) .tile .complexity {
     color: rgba(255, 255, 255, 0.55);
 }
 .tile .sym { font-size: 22px; font-weight: 700; line-height: 1; }
-.tile .name { font-size: 10px; color: rgba(255, 255, 255, 0.75); margin-top: 2px; line-height: 1.2; }
+.tile .name { font-size: 10px; color: rgba(0, 0, 0, 0.55); margin-top: 2px; line-height: 1.2; }
+:root:not([data-theme='light']) .tile .name {
+    color: rgba(255, 255, 255, 0.75);
+}
 
 .sort { background: var(--sort-dim); border-color: var(--sort); }
 .sort .sym { color: var(--sort); }
