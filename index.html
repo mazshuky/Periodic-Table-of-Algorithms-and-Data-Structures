@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Periodic Table of Algorithms &amp; Data Structures</title>
-  <script type="module" crossorigin src="/Periodic-Table-of-Algorithms-and-Data-Structures/assets/index-Wnh_vaFP.js"></script>
-  <link rel="stylesheet" crossorigin href="/Periodic-Table-of-Algorithms-and-Data-Structures/assets/index-G57qlnbi.css">
+  <script type="module" crossorigin src="/Periodic-Table-of-Algorithms-and-Data-Structures/assets/index-4vesbtL5.js"></script>
+  <link rel="stylesheet" crossorigin href="/Periodic-Table-of-Algorithms-and-Data-Structures/assets/index-1e7Z-H_e.css">
 </head>
 <body>
 <header>
@@ -31,13 +31,226 @@
         <div class="modal-row"><b>Time complexity</b><span id="mTime"></span></div>
         <div class="modal-row"><b>Space complexity</b><span id="mSpace"></span></div>
         <div class="modal-row"><b>What it does</b><span id="mDesc"></span></div>
+        <div class="viz-section" id="vizSection">
+            <div class="viz-bars" id="vizBars"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizGraphSection">
+            <svg id="vizGraph" viewBox="0 0 400 260" class="viz-graph-svg"></svg>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizGraphReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizGraphPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizGraphProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizMatrixSection">
+            <div id="vizMatrix"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizMatrixReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizMatrixPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizMatrixProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizTarjanSection">
+            <svg id="vizTarjan" viewBox="0 0 400 230" class="viz-graph-svg"></svg>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizTarjanReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizTarjanPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizTarjanProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizTreeSection">
+            <svg id="vizTree" viewBox="0 0 400 230" class="viz-graph-svg"></svg>
+            <div class="viz-caption" id="vizTreeCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizTreeReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizTreePlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizTreeProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizFenwickSection">
+            <div class="viz-bars" id="vizFenwickBars"></div>
+            <div class="viz-caption" id="vizFenwickCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizFenwickReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizFenwickPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizFenwickProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizDPSection">
+            <div class="dp-table-wrap" id="vizDP"></div>
+            <div class="viz-caption" id="vizDPCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizDPReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizDPPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizDPProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizSearchSection">
+            <div class="viz-bars" id="vizSearchBars"></div>
+            <div class="viz-caption" id="vizSearchCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizSearchReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizSearchPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizSearchProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizHuffSection">
+            <svg id="vizHuff" viewBox="0 0 400 230" class="viz-graph-svg"></svg>
+            <div class="viz-caption" id="vizHuffCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizHuffReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizHuffPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizHuffProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizActivitySection">
+            <div id="vizActivity"></div>
+            <div class="viz-caption" id="vizActivityCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizActivityReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizActivityPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizActivityProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizJobSection">
+            <div id="vizJob"></div>
+            <div class="viz-caption" id="vizJobCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizJobReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizJobPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizJobProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizLinearSection">
+            <div id="vizLinear"></div>
+            <div class="viz-caption" id="vizLinearCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizLinearReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizLinearPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizLinearProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizHashSection">
+            <div id="vizHash"></div>
+            <div class="viz-caption" id="vizHashCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizHashReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizHashPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizHashProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizBloomSection">
+            <div id="vizBloom"></div>
+            <div class="viz-caption" id="vizBloomCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizBloomReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizBloomPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizBloomProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizLruSection">
+            <div id="vizLru"></div>
+            <div class="viz-caption" id="vizLruCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizLruReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizLruPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizLruProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizBheapSection">
+            <div id="vizBheap"></div>
+            <div class="viz-caption" id="vizBheapCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizBheapReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizBheapPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizBheapProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizFibheapSection">
+            <div id="vizFibheap"></div>
+            <div class="viz-caption" id="vizFibheapCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizFibheapReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizFibheapPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizFibheapProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizKaraSection">
+            <div id="vizKara"></div>
+            <div class="viz-caption" id="vizKaraCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizKaraReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizKaraPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizKaraProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizClsSection">
+            <svg id="vizCls" viewBox="0 0 400 200" class="viz-graph-svg"></svg>
+            <div class="viz-caption" id="vizClsCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizClsReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizClsPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizClsProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizQueensSection">
+            <div id="vizQueens"></div>
+            <div class="viz-caption" id="vizQueensCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizQueensReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizQueensPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizQueensProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizSudokuSection">
+            <div id="vizSudoku"></div>
+            <div class="viz-caption" id="vizSudokuCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizSudokuReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizSudokuPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizSudokuProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizKmpSection">
+            <div id="vizKmp"></div>
+            <div class="viz-caption" id="vizKmpCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizKmpReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizKmpPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizKmpProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizRbkSection">
+            <div id="vizRbk"></div>
+            <div class="viz-caption" id="vizRbkCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizRbkReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizRbkPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizRbkProgress"></span>
+            </div>
+        </div>
+        <div class="viz-section" id="vizSfxSection">
+            <div id="vizSfx"></div>
+            <div class="viz-caption" id="vizSfxCaption"></div>
+            <div class="viz-controls">
+                <button class="viz-btn" id="vizSfxReplay">&#8634; Replay</button>
+                <button class="viz-btn" id="vizSfxPlayPause">&#10074;&#10074; Pause</button>
+                <span class="viz-progress" id="vizSfxProgress"></span>
+            </div>
+        </div>
+
     </div>
 </div>
 
 <footer>
     Inspired by AlexandreHTRB's Periodic Table of Computing, itself based on Adrian Roselli's
     Periodic Table of the Elements. Built for fun, not chemistry-accurate.
-    <br />Open-source under <a href="https://github.com/mazshuky/periodic-table-of-algorithms/blob/main/LICENSE">MIT License</a>.
+    <br />Open-source under <a href="https://github.com/your-username/periodic-table-of-algorithms/blob/main/LICENSE">MIT License</a>.
 </footer>
 
 </body>
