@@ -697,3 +697,178 @@ export const DIV_BACK_STRING_GENERATORS: Record<string, string> = {
     Kar: 'karatsuba', Cls: 'closestPair', Nqn: 'nqueens',
     Kmp: 'kmp', Rbk: 'rabinKarp', Sfx: 'suffixArray',
 };
+
+// ---------- Sudoku Solver ----------
+
+export interface SudokuStep {
+    board: number[][];       // 9x9, 0 = empty
+    given: boolean[][];      // true = original clue (immutable)
+    activeRow: number;
+    activeCol: number;
+    backtrack: boolean;
+    caption: string;
+}
+
+export function sudokuSteps(): SudokuStep[] {
+    // A solvable 9x9 puzzle (0 = empty)
+    const initial: number[][] = [
+        [5, 3, 0, 0, 7, 0, 0, 0, 0],
+        [6, 0, 0, 1, 9, 5, 0, 0, 0],
+        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [8, 0, 0, 0, 6, 0, 0, 0, 3],
+        [4, 0, 0, 8, 0, 3, 0, 0, 1],
+        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 6, 0, 0, 0, 0, 2, 8, 0],
+        [0, 0, 0, 4, 1, 9, 0, 0, 5],
+        [0, 0, 0, 0, 8, 0, 0, 7, 9],
+    ];
+
+    const given: boolean[][] = initial.map((row) => row.map((v) => v !== 0));
+    const board: number[][] = initial.map((row) => [...row]);
+    const steps: SudokuStep[] = [];
+
+    // Limit steps to keep animation manageable
+    const MAX_STEPS = 300;
+
+    function snap(r: number, c: number, backtrack: boolean, caption: string): void {
+        if (steps.length >= MAX_STEPS) return;
+        steps.push({
+            board: board.map((row) => [...row]),
+            given: given.map((row) => [...row]),
+            activeRow: r,
+            activeCol: c,
+            backtrack,
+            caption,
+        });
+    }
+
+    function isValid(r: number, c: number, num: number): boolean {
+        for (let i = 0; i < 9; i++) {
+            if (board[r][i] === num) return false;
+            if (board[i][c] === num) return false;
+        }
+        const br = Math.floor(r / 3) * 3;
+        const bc = Math.floor(c / 3) * 3;
+        for (let i = 0; i < 3; i++)
+            for (let j = 0; j < 3; j++)
+                if (board[br + i][bc + j] === num) return false;
+        return true;
+    }
+
+    function solve(): boolean {
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                if (board[r][c] === 0) {
+                    for (let num = 1; num <= 9; num++) {
+                        if (steps.length >= MAX_STEPS) return true; // stop early, show result
+                        if (isValid(r, c, num)) {
+                            board[r][c] = num;
+                            snap(r, c, false, `Place ${num} at (${r},${c})`);
+                            if (solve()) return true;
+                            if (steps.length < MAX_STEPS) {
+                                snap(r, c, true, `Backtrack at (${r},${c}) — ${num} leads to conflict`);
+                                board[r][c] = 0;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    snap(-1, -1, false, 'Sudoku: fill the 9×9 grid so every row, column, and 3×3 box contains 1–9');
+    solve();
+    if (steps.length < MAX_STEPS) {
+        steps.push({
+            board: board.map((row) => [...row]),
+            given: given.map((row) => [...row]),
+            activeRow: -1,
+            activeCol: -1,
+            backtrack: false,
+            caption: 'Solved! Every row, column, and box contains 1–9 with no repeats.',
+        });
+    }
+
+    return steps;
+}
+
+export class SudokuPlayer {
+    private steps: SudokuStep[] = [];
+    private idx = 0;
+    private timer: number | null = null;
+    private speedMs = 120;
+
+    constructor(
+        private container: HTMLElement,
+        private captionEl: HTMLElement,
+        private onStepChange?: (idx: number, total: number) => void,
+    ) {}
+
+    load(steps: SudokuStep[]): void { this.pause(); this.steps = steps; this.idx = 0; this.render(); }
+
+    play(): void {
+        if (this.timer !== null) return;
+        this.timer = window.setInterval(() => {
+            if (this.idx >= this.steps.length - 1) { this.pause(); return; }
+            this.idx++; this.render();
+        }, this.speedMs);
+    }
+
+    pause(): void { if (this.timer !== null) { window.clearInterval(this.timer); this.timer = null; } }
+    restart(): void { this.pause(); this.idx = 0; this.render(); this.play(); }
+
+    private render(): void {
+        const step = this.steps[this.idx];
+        if (!step) return;
+        this.container.innerHTML = '';
+
+        const grid = document.createElement('div');
+        grid.style.cssText = 'display:grid; grid-template-columns:repeat(9,30px); gap:2px; width:fit-content;';
+
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                const cell = document.createElement('div');
+                const val = step.board[r][c];
+                const isGiven = step.given[r][c];
+                const isActive = r === step.activeRow && c === step.activeCol;
+                const box = Math.floor(r / 3) * 3 + Math.floor(c / 3);
+                const isLight = box % 2 === 0;
+
+                const bg = isActive
+                    ? (step.backtrack ? 'var(--back-dim)' : 'var(--greedy-dim)')
+                    : isGiven ? 'var(--panel)'
+                        : val !== 0 ? (isLight ? 'var(--dp-dim)' : 'var(--dp-dim)')
+                            : isLight ? 'var(--panel)' : 'var(--bg)';
+
+                const border = isActive
+                    ? (step.backtrack ? 'var(--back)' : 'var(--greedy)')
+                    : isGiven ? 'var(--grid-line)'
+                        : val !== 0 ? 'var(--dp)' : 'var(--grid-line)';
+
+                const color = isGiven ? 'var(--text)' : isActive ? (step.backtrack ? 'var(--back)' : 'var(--greedy)') : 'var(--dp)';
+
+                // Thicker borders for 3x3 box edges
+                const borderTop = r % 3 === 0 ? '2px' : '1px';
+                const borderLeft = c % 3 === 0 ? '2px' : '1px';
+
+                cell.style.cssText = `
+          width:30px; height:30px; display:flex; align-items:center; justify-content:center;
+          font-size:${isGiven ? '12px' : '11px'}; font-weight:${isGiven ? '700' : '600'};
+          background:${bg}; color:${color};
+          border-top:${borderTop} solid ${border};
+          border-left:${borderLeft} solid ${border};
+          border-bottom:1px solid ${border};
+          border-right:1px solid ${border};
+        `;
+                cell.textContent = val !== 0 ? String(val) : '';
+                grid.appendChild(cell);
+            }
+        }
+
+        this.container.appendChild(grid);
+        this.captionEl.textContent = step.caption;
+        this.onStepChange?.(this.idx, this.steps.length - 1);
+    }
+}

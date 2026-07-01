@@ -11,7 +11,7 @@ import { SEARCH_GENERATORS, SearchPlayer } from './searchVisualizer';
 import { huffmanSteps, HuffmanPlayer, activitySelectionSteps, ActivityPlayer, jobSchedulingSteps, JobSchedulingPlayer } from './greedyVisualizer';
 import { LINEAR_GENERATORS, LinearPlayer } from './linearVisualizer';
 import { hashTableSteps, HashTablePlayer, bloomFilterSteps, BloomFilterPlayer, lruCacheSteps, LRUCachePlayer, binaryHeapSteps, BinaryHeapPlayer, fibHeapSteps, FibHeapPlayer } from './hashHeapVisualizer';
-import { karatsubaSteps, KaratsubaPlayer, closestPairSteps, ClosestPairPlayer, nQueensSteps, NQueensPlayer, kmpSteps, KMPPlayer, rabinKarpSteps, RabinKarpPlayer, suffixArraySteps, SuffixArrayPlayer } from './divBackStringVisualizer';
+import { karatsubaSteps, KaratsubaPlayer, closestPairSteps, ClosestPairPlayer, nQueensSteps, NQueensPlayer, sudokuSteps, SudokuPlayer, kmpSteps, KMPPlayer, rabinKarpSteps, RabinKarpPlayer, suffixArraySteps, SuffixArrayPlayer } from './divBackStringVisualizer';
 
 function renderKey(): void {
     const keyEl = document.getElementById('key')!;
@@ -354,6 +354,7 @@ function setupModal(): (item: AlgoItem) => void {
     const fibheap = makePlayer('vizFibheapSection', 'vizFibheap', 'vizFibheapCaption', 'vizFibheapProgress', 'vizFibheapReplay', 'vizFibheapPlayPause', FibHeapPlayer);
     const kara = makePlayer('vizKaraSection', 'vizKara', 'vizKaraCaption', 'vizKaraProgress', 'vizKaraReplay', 'vizKaraPlayPause', KaratsubaPlayer);
     const queens = makePlayer('vizQueensSection', 'vizQueens', 'vizQueensCaption', 'vizQueensProgress', 'vizQueensReplay', 'vizQueensPlayPause', NQueensPlayer);
+    const sudoku = makePlayer('vizSudokuSection', 'vizSudoku', 'vizSudokuCaption', 'vizSudokuProgress', 'vizSudokuReplay', 'vizSudokuPlayPause', SudokuPlayer);
     const kmp = makePlayer('vizKmpSection', 'vizKmp', 'vizKmpCaption', 'vizKmpProgress', 'vizKmpReplay', 'vizKmpPlayPause', KMPPlayer);
     const rbk = makePlayer('vizRbkSection', 'vizRbk', 'vizRbkCaption', 'vizRbkProgress', 'vizRbkReplay', 'vizRbkPlayPause', RabinKarpPlayer);
     const sfx = makePlayer('vizSfxSection', 'vizSfx', 'vizSfxCaption', 'vizSfxProgress', 'vizSfxReplay', 'vizSfxPlayPause', SuffixArrayPlayer);
@@ -379,7 +380,7 @@ function setupModal(): (item: AlgoItem) => void {
         vizFenwickSection, vizDPSection, vizSearchSection, vizHuffSection, vizActivitySection,
         vizJobSection, linear.section, hashTbl.section, bloom.section, lru.section,
         bheap.section, fibheap.section, kara.section, vizClsSection, queens.section,
-        kmp.section, rbk.section, sfx.section,
+        sudoku.section, kmp.section, rbk.section, sfx.section,
     ];
 
     const allPause = () => {
@@ -388,7 +389,7 @@ function setupModal(): (item: AlgoItem) => void {
         huffPlayer.pause(); activityPlayer.pause(); jobPlayer.pause();
         linear.player.pause(); hashTbl.player.pause(); bloom.player.pause(); lru.player.pause();
         bheap.player.pause(); fibheap.player.pause(); kara.player.pause(); clsPlayer.pause();
-        queens.player.pause(); kmp.player.pause(); rbk.player.pause(); sfx.player.pause();
+        queens.player.pause(); sudoku.player.pause(); kmp.player.pause(); rbk.player.pause(); sfx.player.pause();
     };
 
     function activate(section: HTMLElement, startFn: () => void): void {
@@ -445,6 +446,8 @@ function setupModal(): (item: AlgoItem) => void {
             activate(vizClsSection, () => { clsPlayer.load(closestPairSteps()); clsPlayer.play(); isClsPlaying = true; vizClsPlayPauseBtn.innerHTML = '&#10074;&#10074; Pause'; });
         } else if (item.sym === 'Nqn') {
             activate(queens.section, () => { queens.player.load(nQueensSteps()); queens.player.play(); queens.isPlaying.v = true; queens.playPauseBtn.innerHTML = '&#10074;&#10074; Pause'; });
+        } else if (item.sym === 'Sud') {
+            activate(sudoku.section, () => { sudoku.player.load(sudokuSteps()); sudoku.player.play(); sudoku.isPlaying.v = true; sudoku.playPauseBtn.innerHTML = '&#10074;&#10074; Pause'; });
         } else if (item.sym === 'Kmp') {
             activate(kmp.section, () => { kmp.player.load(kmpSteps()); kmp.player.play(); kmp.isPlaying.v = true; kmp.playPauseBtn.innerHTML = '&#10074;&#10074; Pause'; });
         } else if (item.sym === 'Rbk') {
